@@ -1,0 +1,571 @@
+﻿@model AtGo2.DocumentService.Models.Request.InvoicePrintData
+<style>
+    .row {
+        margin: 0; 
+        padding: 0; 
+    }
+
+    .col-sm-6 {
+        padding: 0; 
+    }
+
+        .col-sm-6 p {
+            margin: 0; 
+            padding: 0; 
+        }
+
+    .col-sm-6 {
+        display: block; 
+    }
+
+    table {
+        font-size: 10px; 
+        border-collapse: collapse; 
+    }
+
+    td {
+        padding: 2px 5px; 
+    }
+</style>
+@if (Model.Module == "SE")
+    {
+        <div class="row">
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>ShippingLine</strong>: @Model.ShipLineCode
+            </div>
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>Vessel Name</strong>: @Model.Vesselname
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>Cross Country Shipment</strong>: @Model.IsCrossCountry
+            </div>
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>Voyage No</strong>: @Model.Voyageno
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>IRN: </strong> @Model.IRNNo
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+            <thead>
+                <tr>
+                    <th style="font-size:12px;">Registered</th>
+                    <th style="font-size:12px;">SEZ</th>
+                    <th style="font-size:12px;">IRN</th>
+                    <th style="font-size:12px;">POS</th>
+                    <th style="font-size:12px;">LOS</th>
+                    <th style="font-size:12px;">NOS</th>
+                    <th style="font-size:12px;">Containers</th>
+                    <th style="font-size:12px;">E-Invoice Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-size: 12px;">@Model.Registered</td>
+                    <td style="font-size: 12px;">@Model.Sez</td>
+                    <td style="font-size: 12px;">@Model.IRN</td>
+                    <td style="font-size: 12px;">@Model.POS</td>
+                    <td style="font-size: 12px;">@Model.LOS</td>
+                    <td style="font-size: 12px;">@Model.NOS</td>
+                    <td style="font-size: 12px;">@Model.Containers</td>
+                    <td style="font-size: 12px;">@Model.EInvoiceType</td>
+                </tr>
+            </tbody>
+        </table>
+        @if (!string.IsNullOrEmpty(Model.InvoiceTagging))
+        {
+            <div style="text-align: center;">
+                <em>@Model.InvoiceTagging</em>
+            </div>
+        }
+        <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+            <thead>
+                <tr>
+                    <th style="font-size: 12px;">Job No.</th>
+                    <th style="font-size: 12px;">House No. /Date</th>
+                    <th style="font-size: 12px;">Master No. /Date</th>
+                    <th style="font-size: 12px;">Packages</th>
+                    <th style="font-size: 12px;">Volum /CBM</th>
+                    <th style="font-size: 12px;">NetWTKGS / GrossWtKGS</th>
+                    <th style="font-size: 12px;">Shipper/Consignee</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-size: 12px;">@Model.JobNo</td>
+                    <td style="font-size: 12px;">
+                        @if (!string.IsNullOrEmpty(Model.HouseNo))
+                        {
+                            @Model.HouseNo <br /> @Model.JobDate
+                        }
+                        else
+                        {
+                        }
+                    </td>
+                    <td style="font-size: 12px;">
+                        @if (!string.IsNullOrEmpty(Model.MasterNo))
+                        {
+                            @Model.MasterNo <br /> @Model.JobDate
+                        }
+                        else
+                        {
+                        }
+                    </td>
+                    <td style="text-align: right;font-size: 12px;">@Model.Packages</td>
+                    <td style="text-align: right;font-size: 12px;">@Model.Measurement</td>
+                    <td style="text-align: right;font-size: 12px;">@(Model.NetWt.HasValue ? Model.NetWt.Value.ToString("F3") : "0.000") <br />@Model.Weight</td>
+                    <td style="font-size: 12px;">@Model.ShprName <br />@Model.ConsigneeName</td>
+                </tr>
+            </tbody>
+        </table>
+
+        @if (!string.IsNullOrEmpty(Model.ContainerNo))
+        {
+            <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+                <thead>
+                    <tr style="font-size: 12px;">
+                        <th>Container No</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-size: 12px;">@Model.ContainerNo</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+    else if (Model.Module == "AI")
+    {
+
+        <div class="row">
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>Cross Country Shipment</strong>: @Model.IsCrossCountry
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>IRN:</strong> @Model.IRNNo
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+            <thead>
+                <tr>
+                    <th style="font-size: 12px;">Registered</th>
+                    <th style="font-size: 12px;">SEZ</th>
+                    <th style="font-size: 12px;">IRN</th>
+                    <th style="font-size: 12px;">POS</th>
+                    <th style="font-size: 12px;">LOS</th>
+                    <th style="font-size: 12px;">NOS</th>
+                    <th style="font-size: 12px;">E-Invoice Type</th>
+                    <th style="font-size: 12px;">Shipper/Consignee</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-size: 12px;">@Model.Registered</td>
+                    <td style="font-size: 12px;">@Model.Sez</td>
+                    <td style="font-size: 12px;">@Model.IRN</td>
+                    <td style="font-size: 12px;">@Model.POS</td>
+                    <td style="font-size: 12px;">@Model.LOS</td>
+                    <td style="font-size: 12px;">@Model.NOS</td>
+                    <td style="font-size: 12px;">@Model.EInvoiceType</td>
+                    <td style="font-size: 12px;">@Model.ShprName <br />@Model.ConsigneeName</td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        @if (!string.IsNullOrEmpty(Model.InvoiceTagging))
+        {
+            <div style="text-align: center;">
+                <em>@Model.InvoiceTagging</em>
+            </div>
+        }
+
+        <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+            <thead>
+                <tr>
+                    <th style="font-size: 12px;">Job No.</th>
+                    <th style="font-size: 12px;">House No. /DATE</th>
+                    <th style="font-size: 12px;">Master No. /DATE</th>
+                    <th style="font-size: 12px;">IGM No</th>
+                    <th style="font-size: 12px;">FLIGHTNo. /DATE</th>
+                    <th style="font-size: 12px;">MARKS&NOS</th>
+                    <th style="font-size: 12px;">CONTENTS</th>
+                    <th style="font-size: 12px;">Packages</th>
+                    <th style="font-size: 12px;">GrossWtKGS /ChargeWt</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-size: 12px;">@Model.JobNo</td>
+                    <td style="font-size: 12px;">
+                        @if (!string.IsNullOrEmpty(Model.HouseNo))
+                        {
+                            @Model.HouseNo <br /> @Model.JobDate
+                        }
+                        else
+                        {
+                        }
+                    </td>
+                    <td style="font-size: 12px;">
+                        @if (!string.IsNullOrEmpty(Model.MasterNo))
+                        {
+                            @Model.MasterNo <br /> @Model.JobDate
+                        }
+                        else
+                        {
+                        }
+                    </td>
+                    <td style="text-align: right;font-size: 12px;">@Model.IgmNo</td>
+                    <td style="font-size: 12px;">@Model.FlightNo <br /> @Model.FlightDate</td>
+                    <td style="font-size: 12px;">@Model.Marks</td>
+                    <td style="font-size: 12px;">@Model.Remarks</td>
+                    <td style="font-size: 12px;text-align: right;">@Model.Packages</td>
+                    <td style="text-align: right;font-size: 12px;"> @Model.Weight <br /> @Model.ChrgWt</td>
+            </tr>
+            </tbody>
+        </table>
+    }
+    else if (Model.Module == "SI")
+    {
+        <div class="row">
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <p>Cross Country Shipment: <strong>@Model.IsCrossCountry</strong></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" style="display:inline-block;font-family:Verdana;font-size:9pt;">
+                <strong>IRN:</strong>@Model.IRNNo
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+            <thead>
+                <tr>
+                    <th style="font-size: 12px;">Registered</th>
+                    <th style="font-size: 12px;">SEZ</th>
+                    <th style="font-size: 12px;">IRN</th>
+                    <th style="font-size: 12px;">POS</th>
+                    <th style="font-size: 12px;">LOS</th>
+                    <th style="font-size: 12px;">NOS</th>
+                    <th style="font-size: 12px;">ItemNo</th>
+                    <th style="font-size: 12px;">Containers</th>
+                    <th style="font-size: 12px;">Shipper/Consignee</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-size: 12px;">@Model.Registered</td>
+                    <td style="font-size: 12px;">@Model.Sez</td>
+                    <td style="font-size: 12px;">@Model.IRN</td>
+                    <td style="font-size: 12px;">@Model.POS</td>
+                    <td style="font-size: 12px;">@Model.LOS</td>
+                    <td style="font-size: 12px;">@Model.NOS</td>
+                    <td style="font-size: 12px;">@Model.ItemNo</td>
+                    <td style="font-size: 12px;">@Model.Containers</td>
+                    <td style="font-size: 12px;">@Model.ShprName <br />@Model.ConsigneeName</td>
+                </tr>
+            </tbody>
+        </table>
+
+        @if (!string.IsNullOrEmpty(Model.InvoiceTagging))
+        {
+            <div style="text-align: center;">
+                <em>@Model.InvoiceTagging</em>
+            </div>
+        }
+
+        <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+            <thead>
+                <tr>
+                    <th style="font-size: 12px;">Job No.</th>
+                    <th style="font-size: 12px;">Vessel Name /Voyage No</th>
+                    <th style="font-size: 12px;">HouseNo /MasterNo</th>
+                    <th style="font-size: 12px;">FCL/LCL</th>
+                    <th style="font-size: 12px;">Packages</th>
+                    <th style="font-size: 12px;">GrossWtKGS</th>
+                    <th style="font-size: 12px;">IGMNo</th>
+                    <th style="font-size: 12px;">Volum /CBM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-size: 12px;">@Model.JobNo</td>
+                    <td style="font-size: 12px;">@Model.Vesselname <br /> @Model.Voyageno </td>
+                    <td style="font-size: 12px;">@Model.HouseNo <br /> @Model.MasterNo </td>
+                    <td style="font-size: 12px;">@Model.LF </td>
+                    <td style="text-align: right;font-size:12px;">@Model.Packages</td>
+                    <td style="text-align: right;font-size:12px;">@Model.Weight </td>
+                    <td style="text-align: right;font-size:12px;"> @Model.IgmNo</td>
+                    <td style="text-align: right;font-size:12px;">@Model.Measurement</td>
+
+                </tr>
+            </tbody>
+        </table>
+        @if (!string.IsNullOrEmpty(Model.ContainerNo))
+        {
+            <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+                <thead>
+                    <tr style="font-size: 12px;">
+                        <th>Container No</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-size: 12px;">@Model.ContainerNo</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+@if (Model.Module == "AE")
+{
+    <div class="row">
+        <div class="col-sm-6" style="display: inline-block; font-family: Verdana; font-size: 9pt;">
+            <strong>Cross Country Shipment:</strong> @Model.IsCrossCountry
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" style="display: inline-block; font-family: Verdana; font-size: 9pt;">
+            <strong>IRN:</strong> @Model.IRNNo
+        </div>
+    </div>
+    <table class="table table-bordered table-striped invoice-table" style="width: 100%; font-family: Verdana; font-size: 9pt;">
+        <thead>
+            <tr>
+                <th style="font-size: 12px;">Registered</th>
+                <th style="font-size: 12px;">SEZ</th>
+                <th style="font-size: 12px;">IRN</th>
+                <th style="font-size: 12px;">POS</th>
+                <th style="font-size: 12px;">LOS</th>
+                <th style="font-size: 12px;">NOS</th>
+                <th style="font-size: 12px;">E-Invoice Type</th>
+                <th style="font-size: 12px;">Shipper/Consignee</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-size: 12px;">@Model.Registered</td>
+                <td style="font-size: 12px;">@Model.Sez</td>
+                <td style="font-size: 12px;">@Model.IRN</td>
+                <td style="font-size: 12px;">@Model.POS</td>
+                <td style="font-size: 12px;">@Model.LOS</td>
+                <td style="font-size: 12px;">@Model.NOS</td>
+                <td style="font-size: 12px;">@Model.EInvoiceType</td>
+                <td style="font-size: 12px;">
+                    @Model.ShprName<br />@Model.ConsigneeName
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    @if (!string.IsNullOrWhiteSpace(Model.InvoiceTagging))
+    {
+        <div style="text-align: center;">
+            <em>@Model.InvoiceTagging</em>
+        </div>
+    }
+    <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+        <thead>
+            <tr>
+                <th style="font-size: 12px;">Job No.</th>
+                <th style="font-size: 12px;">House No. /Date</th>
+                <th style="font-size: 12px;">Master No. /Date</th>
+                <th style="font-size: 12px;">Packages</th>
+                <th style="font-size: 12px;">GrossWtKGS /ChargeWt</th>
+                <th style="font-size: 12px;">Volum /CBM</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-size: 12px;">@Model.JobNo</td>
+                <td style="font-size: 12px;">
+                    @if (!string.IsNullOrEmpty(Model.HouseNo))
+                    {
+                        @Model.HouseNo <br /> @Model.JobDate
+                    }
+                </td>
+                <td style="font-size: 12px;">
+                    @if (!string.IsNullOrEmpty(Model.MasterNo))
+                    {
+                        @Model.MasterNo <br /> @Model.JobDate
+                    }
+                </td>
+                <td style="text-align: right; font-size: 12px;">@Model.Packages</td>
+                <td style="text-align: right; font-size: 12px;">@Model.Weight<br /> @Model.ChrgWt</td>
+                <td style="text-align: right;font-size:12px;">@Model.Measurement</td>
+            </tr>
+        </tbody>
+    </table>
+}
+@if (Model.Module == "CF" && Model.SubModule != "TPT")
+{
+    <div class="row">
+        <div class="col-sm-6" style="display: inline-block; font-family: Verdana; font-size: 9pt;">
+            <strong>Cross Country Shipment:</strong> @Model.IsCrossCountry
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" style="display: inline-block; font-family: Verdana; font-size: 9pt;">
+            <strong>IRN:</strong> @Model.IRNNo
+        </div>
+    </div>
+    <table class="table table-bordered table-striped invoice-table" style="width: 100%; font-family: Verdana; font-size: 9pt;">
+        <thead>
+            <tr>
+                <th style="font-size: 12px;">Registered</th>
+                <th style="font-size: 12px;">SEZ</th>
+                <th style="font-size: 12px;">IRN</th>
+                <th style="font-size: 12px;">POS</th>
+                <th style="font-size: 12px;">LOS</th>
+                <th style="font-size: 12px;">NOS</th>
+                <th style="font-size: 12px;">E-Invoice Type</th>
+                <th style="font-size: 12px;">Shipper/Consignee</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-size: 12px;">@Model.Registered</td>
+                <td style="font-size: 12px;">@Model.Sez</td>
+                <td style="font-size: 12px;">@Model.IRN</td>
+                <td style="font-size: 12px;">@Model.POS</td>
+                <td style="font-size: 12px;">@Model.LOS</td>
+                <td style="font-size: 12px;">@Model.NOS</td>
+                <td style="font-size: 12px;">@Model.EInvoiceType</td>
+                <td style="font-size: 12px;">
+                    @Model.ShprName<br />@Model.ConsigneeName
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    @if (!string.IsNullOrWhiteSpace(Model.InvoiceTagging))
+    {
+        <div style="text-align: center;">
+            <em>@Model.InvoiceTagging</em>
+        </div>
+    }
+    <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+        <thead>
+            <tr>
+                <th style="font-size: 12px;">Job No.</th>
+                <th style="font-size: 12px;">Activity</th>
+                <th style="font-size: 12px;">House No. /Date</th>
+                <th style="font-size: 12px;">Master No. /Date</th>
+                <th style="font-size: 12px;">Packages</th>
+                <th style="font-size: 12px;">GrossWtKGS /ChargeWt</th>
+                <th style="font-size: 12px;">Volum /CBM</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-size: 12px;">@Model.JobNo</td>
+                <td style="font-size: 12px;">@Model.SubModule</td>
+                <td style="font-size: 12px;">
+                    @if (!string.IsNullOrEmpty(Model.HouseNo))
+                    {
+                        @Model.HouseNo <br /> @Model.HouseDate
+                    }
+                </td>
+                <td style="font-size: 12px;">
+                    @if (!string.IsNullOrEmpty(Model.MasterNo))
+                    {
+                        @Model.MasterNo <br /> @Model.MasterDate
+                    }
+                </td>
+                <td style="text-align: right; font-size: 12px;">@Model.Packages</td>
+                <td style="text-align: right; font-size: 12px;">@Model.Weight </td>
+                <td style="text-align: right;font-size:12px;">@Model.Measurement</td>
+            </tr>
+
+        </tbody>
+    </table>
+}
+@if (Model.Module == "CF" && Model.SubModule == "TPT")
+{
+    <div class="row">
+        <div class="col-sm-6" style="display: inline-block; font-family: Verdana; font-size: 9pt;">
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" style="display: inline-block; font-family: Verdana; font-size: 9pt;">
+            
+        </div>
+    </div>
+    <table class="table table-bordered table-striped invoice-table" style="width: 100%; font-family: Verdana; font-size: 9pt;">
+        <thead>
+            <tr>
+                <th style="font-size: 12px;">Registered</th>
+                <th style="font-size: 12px;">SEZ</th>
+                <th style="font-size: 12px;">POS</th>
+                <th style="font-size: 12px;">LOS</th>
+                <th style="font-size: 12px;">NOS</th>
+                <th style="font-size: 12px;">E-Invoice Type</th>
+                <th style="font-size: 12px;">Shipper/Consignee</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-size: 12px;">@Model.Registered</td>
+                <td style="font-size: 12px;">@Model.Sez</td>
+                <td style="font-size: 12px;">@Model.POS</td>
+                <td style="font-size: 12px;">@Model.LOS</td>
+                <td style="font-size: 12px;">@Model.NOS</td>
+                <td style="font-size: 12px;">@Model.EInvoiceType</td>
+                <td style="font-size: 12px;">
+                    @Model.ShprName<br />@Model.ConsigneeName
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    @if (!string.IsNullOrWhiteSpace(Model.InvoiceTagging))
+    {
+        <div style="text-align: center;">
+            <em>@Model.InvoiceTagging</em>
+        </div>
+    }
+    <table class="table table-bordered table-striped invoice-table" style="width:100%; font-family:Verdana; font-size:9pt;">
+        <thead>
+            <tr>
+                <th style="font-size: 12px;">Job No.</th>
+                <th style="font-size: 12px;">Activity</th>
+                <th style="font-size: 12px;">Packages</th>
+                <th style="font-size: 12px;">GrossWtKGS /ChargeWt</th>
+                <th style="font-size: 12px;">Volum /CBM</th>
+                @if (Model.CompCode == "TSC")
+                {
+                    <th style="font-size: 12px;">Consignment No(s)</th>
+                    <th style="font-size: 12px;">Vehicle No(s)</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="font-size: 12px;">@Model.JobNo</td>
+                <td style="font-size: 12px;">@Model.SubModule</td>
+                <td style="text-align: right; font-size: 12px;">@Model.Packages</td>
+                <td style="text-align: right; font-size: 12px;">@Model.Weight </td>
+                <td style="text-align: right;font-size:12px;">@Model.Measurement</td>
+                @if (Model.CompCode == "TSC")
+                {
+                    <td style="font-size: 12px;text-align: right;">@Model.ConsignmentNumbers</td>
+                    <td style="font-size: 12px;text-align: right;">@Model.VehicleNumbers</td>
+                }
+            </tr>
+
+        </tbody>
+    </table>
+}
+
+
+

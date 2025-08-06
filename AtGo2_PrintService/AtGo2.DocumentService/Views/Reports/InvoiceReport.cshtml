@@ -1,0 +1,641 @@
+﻿@model AtGo2.DocumentService.Models.Request.InvoiceReportRequest
+
+@{
+    bool addLogo = Model.Settings.AddLogo;
+    string printType = Model.Settings.PrintType;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Print</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .invoice-box {
+        padding: 10px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        }
+
+        .invoice-table th, .invoice-table td {
+        vertical-align: middle;
+        border: 1px solid #ddd !important;
+        padding: 2px !important;
+        font-size: 15px;
+        word-break: break-word;
+        }
+
+        .invoice-table th {
+        background-color: #f4f4f4;
+        }
+
+        .header-content img {
+        max-width: 100px;
+        height: auto;
+        }
+
+        .header-content .logo {
+        max-width: 150px;
+        height: auto;
+        }
+
+        .page-footer {
+        bottom: 100px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        color: #555;
+        }
+
+        .pagebreak {
+        page-break-before: always;
+        }
+
+
+        .watermark-container {
+        position: relative;
+        }
+
+        .watermark-container::before {
+        content: '';
+        background-image: url('@ViewBag.ApiUrl/api/Reports/PWM.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        opacity: 1.0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        }
+
+        .invoice-table {
+        position: relative;
+        z-index: 1;
+        background-color: transparent;
+        }
+
+        @@media print {
+        margin: 0;
+        padding: 0;
+        }
+
+        .watermark-image {
+        display: block;
+        }
+
+        img.borderLogo {
+        margin: 0;
+        padding: 0;
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 65px;
+        }
+    </style>
+</head>
+
+<body>
+
+    @{
+        int totalPages = Model.Invoices.Count();
+        int currentPage = 0;
+    }
+
+    @foreach (var item in Model.Invoices)
+    {
+        currentPage++;
+        <div class="header-content">
+            <div class="invoice-box">
+                <div class="row">
+                    <div class="col-sm-1" style="margin-left: -1rem;text-align: left;">
+                        @if (addLogo)
+                        {
+                            @if (item.Company.BusinessEntityName.Equals("Triumph Supply Chain Private Limited"))
+                            {  }
+                            else
+                            {
+                                <img src="@ViewBag.ApiUrl/api/Reports/company-logo-left.png" alt="Company Logo" class="borderLogo" width="65" height="100" />
+                            }                            
+                        }
+                    </div>
+                    <div class="col-sm-5" >
+                        <span style="font-family:Verdana;font-size:medium;font-weight:bold;">@item.Company.BusinessEntityName</span><br />
+                        <span id="lblAdress" style="display:inline-block;font-family:Verdana;font-size:11pt;width:230px;text-align: left">
+                            @item.Company.BusinessEntityAddress
+                        </span>
+                    </div>
+                    <div class="col-sm-6" style="margin-right: -1rem;text-align: right;">
+                        @if (addLogo)
+                        {
+                            @if (item.Company.BusinessEntityName.Equals("Triumph Supply Chain Private Limited"))
+                            {
+                                <img src="@ViewBag.ApiUrl/api/Reports/TriumphLogo.png" alt="Triumph Logo" style="width: 400px; height: auto; max-width: 600%;" />
+
+                            }
+                            else
+                            {
+                                <img src="@ViewBag.ApiUrl/api/Reports/company-logo-right.png" alt="Company Logo" style="width: 400px; height: auto; max-width: 600%;" />
+
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;font-size:9pt">
+                        <div style="float: right">
+                            <span style="font-family:Verdana;font-size:Small;font-weight:bold;">State : @item.Company.BusinessEntityGSTState - GST Number : @item.Company.BusinessEntityGSTNumber</span><br />
+                            @if (item.Company.BusinessEntityName != "Triumph Supply Chain Private Limited")
+                            {
+                                <span style="font-family:Verdana;font-size:Small;font-weight:bold;">LUT No. : @item.Company.LUTNumber - LUT Date : @item.Company.LUTDate.ToString("dd/MM/yyyy")</span><br />
+                            }
+                            <span style="font-family:Verdana;font-size:Small;font-weight:bold;">MSME Number : @item.Company.MSMENumber</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" style="border-top: thin solid black; border-bottom: thin solid black; border-right-width: thin; border-right-color: black; text-align: center;">
+                        <span style="font-family:Bodoni MT Black;font-size:16pt;font-weight:bold;font-family: 'Bodoni MT Black'; color: #800000">@item.InvoiceType.ToUpper()</span>
+                    </div>
+                </div>
+                @if (item.Type != "CN" && item.Type != "DN")
+                {
+                    @if (item.InvoiceType == "PROFORMA INVOICE")
+                    {
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p>Date: <strong>@item.InvoiceDate</strong></p>
+                            </div>
+                            <div class="col-sm-3" style="display:inline-block; font-family:Verdana; font-size:9pt;text-align:right">
+                                <p>Quote No: <strong>@item.QuoteNo</strong></p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-sm-6" style="display:inline-block; font-family:Verdana; font-size:9pt;">
+                                <p>Invoice No: <strong>@item.InvoiceNo</strong></p>
+                            </div>
+                            <div class="col-sm-3" style="display:inline-block; font-family:Verdana; font-size:9pt;">
+                                <p>Invoice Date: <strong>@item.InvoiceDate</strong></p>
+                            </div>
+                            <div class="col-sm-3" style="display:inline-block; font-family:Verdana; font-size:9pt;text-align:right">
+                                <p>Quote No: <strong>@item.QuoteNo</strong></p>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (@item.Type == "CN")
+                {
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p>CreditNoteNo: <strong>@item.CanNo</strong></p>
+                        </div>
+                        <div class="col-sm-3" style="display:inline-block; font-family:Verdana; font-size:9pt;text-align:right">
+                            <p>CreditNoteDate: <strong>@item.InvoiceDate</strong></p>
+                        </div>
+                        <div class="col-sm-3" style="display:inline-block; font-family:Verdana; font-size:8pt;text-align:right">
+                            <p>Against/RefNo: <strong>@item.BillNo</strong></p>
+                        </div>
+                    </div>
+                }
+                @if (@item.Type == "DN")
+                {
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p>DebitNoteNo: <strong>@item.CanNo</strong></p>
+                        </div>
+                        <div class="col-sm-3" style="display:inline-block; font-family:Verdana; font-size:9pt;text-align:right">
+                            <p>DebitNoteDate: <strong>@item.InvoiceDate</strong></p>
+                        </div>
+                        <div class="col-sm-3" style="display:inline-block; font-family:Verdana; font-size:8pt;text-align:right">
+                            <p>Against/RefNo: <strong>@item.BillNo</strong></p>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-sm-6" style="display:inline-block; font-family:Verdana; font-size:9pt;">
+                        <strong>Bill To:</strong> M/s.<strong>@item.BillTo.BusinessEntityName<br></strong>
+                        <p>@item.BillTo.BusinessEntityAddress</p>
+                        @if (item.SubModule == "TPT")
+                        {
+                            <span style="font-family:Verdana;font-size:Small;font-weight:bold;">GSTIN No : @item.BillTo.BusinessEntityGSTNumber</span>                            
+                        }                        
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(item.Notify.BusinessEntityName))
+                    {
+                        <div class="col-sm-6" style="display:inline-block; font-family:Verdana; font-size:9pt;">
+                            <strong>Notify:</strong> M/s.<strong>@item.Notify.BusinessEntityName<br></strong>
+                            <p>@item.Notify.BusinessEntityAddress</p>
+                        </div>
+                    }
+                </div>
+                @if (!string.IsNullOrWhiteSpace(item.ShipTo.BusinessEntityName))
+                {
+                    <div class="row">
+                        <div class="col-sm-6" style="display:inline-block; font-family:Verdana; font-size:9pt;">
+                            <strong>Ship To:</strong> M/s.<strong>@item.ShipTo.BusinessEntityName<br></strong>
+                            <p>@item.ShipTo.BusinessEntityAddress</p>
+                        </div>
+                    </div>
+                }
+
+                @await Html.PartialAsync("_AllModulePartialView", item)
+                @if (item.SubModule == "TPT")
+                {
+                    @if (!string.IsNullOrEmpty(item.OriginName) && !string.IsNullOrEmpty(item.DestinationName))
+                    {
+                        <table class="table table-bordered table-striped invoice-table">
+                            <thead>
+                                <tr>
+                                    <th style="font-size: 12px;">Origin</th>
+                                    <th style="font-size: 12px;">Destination</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (!(string.IsNullOrWhiteSpace(item.OriginName) &&
+                               string.IsNullOrWhiteSpace(item.DestinationName)))
+                                {
+                                    <tr>
+                                        <td>@item.OriginName</td>
+                                        <td>@item.DestinationName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }                    
+                }
+                else
+                {
+                <table class="table table-bordered table-striped invoice-table">
+                    <thead>
+                        <tr>
+                            <th style="font-size: 12px;">Origin</th>
+                            <th style="font-size: 12px;">Place of Recipit</th>
+                            <th style="font-size: 12px;">Port of Loading</th>
+                            <th style="font-size: 12px;">Port of Discharge</th>
+                            <th style="font-size: 12px;">Place of Delivery</th>
+                            <th style="font-size: 12px;">Destination</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!(string.IsNullOrWhiteSpace(item.Orign) &&
+                       string.IsNullOrWhiteSpace(item.PReceipt) &&
+                       string.IsNullOrWhiteSpace(item.PLoading) &&
+                       string.IsNullOrWhiteSpace(item.Discharge) &&
+                       string.IsNullOrWhiteSpace(item.PDelivery) &&
+                       string.IsNullOrWhiteSpace(item.Destination)))
+                        {
+                            <tr>
+                                <td>@item.Orign</td>
+                                <td>@item.PReceipt</td>
+                                <td>@item.PLoading</td>
+                                <td>@item.Discharge</td>
+                                <td>@item.PDelivery</td>
+                                <td>@item.Destination</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                }
+                @if (@item.InvoiceType == "PROFORMA INVOICE")
+                {
+                    <div class="watermark-container">
+                        <table class="table table-bordered table-striped invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Particulars</th>
+                                    <th>SAC Code</th>
+                                    <th>Description</th>
+                                    <th>Charge Type</th>
+                                    <th>Amount</th>
+                                    @if (printType == "GST")
+                                    {
+                                        <th>%</th>
+                                        <th>CGST</th>
+                                        <th>%</th>
+                                        <th>SGST</th>
+                                        <th>%</th>
+                                        <th>IGST</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var invoiceItem in item.InvoiceItems)
+                                {
+                                    <tr>
+                                        <td style="width: fit-content; white-space: nowrap;font-size:9pt;">@invoiceItem.Particulars</td>
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.SACCode</td>
+                                        <td style="white-space: normal; word-wrap: break-word;font-size:9pt;">@invoiceItem.Description</td>
+                                        <td>@invoiceItem.ChargeType</td>
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.Amount.ToString("N2")</td>
+                                        @if (printType == "GST")
+                                        {
+                                            <td style="text-align: right;font-size:9pt;">@invoiceItem.CGSTPercent</td>
+                                            <td style="text-align: right;font-size:9pt;">@invoiceItem.CGST?.ToString("N2")</td>
+                                            <td style="text-align: right;font-size:9pt;">@invoiceItem.SGSTPercent</td>
+                                            <td style="text-align: right;font-size:9pt;">@invoiceItem.SGST?.ToString("N2")</td>
+                                            <td style="text-align: right;font-size:9pt;">@invoiceItem.IGSTPercent</td>
+                                            <td style="text-align: right;font-size:9pt;">@invoiceItem.IGST?.ToString("N2")</td>
+                                        }
+                                    </tr>
+                                }
+                                <tr>
+                                    @if (printType == "GST")
+                                    {
+                                        <td colspan="2"></td>
+                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>
+                                        <td style="text-align: right;font-size:9pt;"><strong>@item.SubTotal.ToString("N2")</strong></td>
+                                        <td></td>
+                                        <td style="text-align: right;font-size:9pt;"><strong>@item.CGST?.ToString("N2")</strong></td>
+                                        <td></td>
+                                        <td style="text-align: right;font-size:9pt;"><strong>@item.SGST?.ToString("N2")</strong></td>
+                                        <td></td>
+                                        <td style="text-align: right;font-size:9pt;"><strong>@item.IGST?.ToString("N2")</strong></td>
+                                    }
+                                    else
+                                    {
+                                        <td colspan="4" class="text-right"><strong>Sub Total</strong></td>
+                                        <td style="text-align: right;font-size:9pt;"><strong>@item.SubTotal.ToString("N2")</strong></td>
+                                    }
+                                </tr>
+                                @if (printType == "GST")
+                                {
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="2" class="text-right"><strong>Total Amount</strong>[@item.Currency]</td>
+                                        <td colspan="8" class="text-right"><strong>@item.TotalAmount.ToString("N2")</strong></td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="12"><strong>Amount In Words</strong>[@item.Currency]: @item.AmountInWords</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-bordered table-striped invoice-table">
+                        <thead>
+                            <tr>
+                                <th style="font-size: 12px;">Particulars</th>
+                                <th style="font-size: 12px;">SAC Code</th>
+                                <th style="font-size: 12px;">Description</th>
+                                <th style="font-size: 12px;">Charge Type</th>
+                                <th style="font-size: 12px;">Amount</th>
+                                @if (printType == "GST")
+                                {
+                                    <th>%</th>
+                                    <th>CGST</th>
+                                    <th>%</th>
+                                    <th>SGST</th>
+                                    <th>%</th>
+                                    <th>IGST</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var invoiceItem in item.InvoiceItems)
+                            {
+                                <tr>
+                                    <td style="width: fit-content; white-space: nowrap;font-size:9pt;">@invoiceItem.Particulars</td>
+                                    <td style="text-align: left;font-size:9pt;">@invoiceItem.SACCode</td>
+                                    <td style="white-space: normal; word-wrap: break-word;font-size:9pt;">@invoiceItem.Description</td>
+                                    <td>@invoiceItem.ChargeType</td>
+                                    <td style="text-align: right;font-size:9pt;">@invoiceItem.Amount.ToString("N2")</td>
+                                    @if (printType == "GST")
+                                    {
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.CGSTPercent</td>
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.CGST?.ToString("N2")</td>
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.SGSTPercent</td>
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.SGST?.ToString("N2")</td>
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.IGSTPercent</td>
+                                        <td style="text-align: right;font-size:9pt;">@invoiceItem.IGST?.ToString("N2")</td>
+                                    }
+                                </tr>
+                            }
+                            <tr>
+                                @if (printType == "GST")
+                                {
+                                    <td colspan="2"></td>
+                                    <td colspan="2" class="text-right"><strong>Sub Total</strong></td>
+                                    <td style="text-align: right;font-size:9pt;"><strong>@item.SubTotal.ToString("N2")</strong></td>
+                                    <td></td>
+                                    <td style="text-align: right;font-size:9pt;"><strong>@item.CGST?.ToString("N2")</strong></td>
+                                    <td></td>
+                                    <td style="text-align: right;font-size:9pt;"><strong>@item.SGST?.ToString("N2")</strong></td>
+                                    <td></td>
+                                    <td style="text-align: right;font-size:9pt;"><strong>@item.IGST?.ToString("N2")</strong></td>
+                                }
+                                else
+                                {
+                                    <td colspan="4" class="text-right"><strong>Sub Total</strong></td>
+                                    <td style="text-align: right;font-size:9pt;"><strong>@item.SubTotal.ToString("N2")</strong></td>
+                                }
+                            </tr>
+                            @if (printType == "GST")
+                            {
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td colspan="2" class="text-right"><strong>Total Amount</strong>[@item.Currency]</td>
+                                    <td colspan="8" class="text-right"><strong>@item.TotalAmount.ToString("N2")</strong></td>
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="12"><strong>Amount In Words</strong>[@item.Currency]: @item.AmountInWords</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(item.BillNo) && !string.IsNullOrEmpty(item.PureAgentBillNo) && item.InvDate != null && item.TotalAmt > 0)
+        {
+            <h1 style="font-size: 15px; font-weight: bold;">PURE AGENT INVOICE DETAILS</h1>
+            <table class="table table-bordered table-striped invoice-table">
+                <thead>
+                    <tr>
+                        <th style="font-size: 12px;">PureAgentBillNo</th>
+                        <th style="font-size: 12px;">InvDate</th>
+                        <th style="font-size: 12px;">TotalAmt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-size: 12px;">@item.PureAgentBillNo</td>
+                        <td style="font-size: 12px;">@item.InvDate</td>
+                        <td style="font-size: 12px;">@item.TotalAmt</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        @if (@item.Type != "CN" && @item.Type != "DN")
+        {
+            <div class="row">
+                <div class="col-sm-12" style="display:inline-block;font-family:Verdana;font-size:9pt;text-align:left">
+                    <p style="margin:0;padding:0;">Remarks: <strong>@item.Remarks</strong></p>
+                    <p style="margin:0;padding:0;">Reference: <strong>@item.RefNo</strong></p>
+                    <p style="margin:0;padding:0;">Description: <strong>@item.Descr</strong></p>
+                    <p style="margin:0;padding:0;"><strong><span style="font-size: 9pt; font-family: Verdana">E.&amp; .O E</span></strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3" style="border-left: thin none #C0C0C0; border-right: thin solid #C0C0C0; border-top: thin solid #C0C0C0; border-bottom: thin solid #C0C0C0; width: 237px; text-align: left; border-style: none;">
+                    @if (!string.IsNullOrWhiteSpace(item.IRNQRCode))
+                    {
+                        <span style="font-family:Verdana;font-size:7pt;font-weight:bold;text-align: left;">E-Invoice QR Code:</span>
+
+                        <br />
+                        <img src="data:image/png;base64,@item.IRNQRCode" style="height:170px;width:170px;border-width:0px;text-align: left;" />
+
+                        <br />
+                    }
+                    <span style="font-size: smaller;"> @System.DateTime.Now.ToString("MMM dd yyyy hh:mmtt")</span> <br /> <p>Sales Executive:<span style="font-family:Verdana;font-size:11pt;"> <br />@item.Salesman</span></p>
+                </div>
+                <div class="col-sm-6" style="display:inline-block; font-family:Verdana; font-size:9pt; line-height:1.5;">
+                    <p>
+                        <span style="font-family:Verdana;font-size:9pt;">
+                            @Html.Raw(item.BottomDescription + item.BeneficiaryDetails)
+                        </span>
+                    </p>
+                </div>
+                <div class="col-sm-3" style="border-left: thin none #C0C0C0; border-right: thin solid #C0C0C0; border-top: thin solid #C0C0C0; border-bottom: thin solid #C0C0C0; width: 237px; text-align: right; border-style: none;">
+                    <span style="font-family:Verdana;font-size:9pt;font-weight:bold;text-align: right;">QR Code for Payments:</span><br />
+
+                    @if (item.Company.BusinessEntityName.Equals("Triumph Supply Chain Private Limited"))
+                    {
+                        <img src="@ViewBag.ApiUrl/api/Reports/Triumph-payment-qr-code.jpg" style="height:170px;width:170px;border-width:0px;" />
+                    }
+                    else
+                    {
+                        <img src="@ViewBag.ApiUrl/api/Reports/tripath-payment-qr-code.JPG" style="height:170px;width:170px;border-width:0px;" />
+                    }
+                    <br />
+                    <span style="font-family: Verdana ;font-size:9pt;">For </span><span style="font-family: Verdana ;font-size:7pt;">@item.Company.BusinessEntityName</span><br />
+                    <span style="font-family:Verdana;font-size:10pt;text-align: center;"><br />@item.EmployeeName</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-12" style="display:inline-block;font-family:Verdana;font-size:9pt;text-align:left">
+                    <p style="margin:0;padding:0;">Remarks: <strong>@item.Remarks</strong></p>
+                    <p style="margin:0;padding:0;">Reference: <strong>@item.RefNo</strong></p>
+                    <p style="margin:0;padding:0;">Description: <strong>@item.Descr</strong></p>
+                    <p style="margin:0;padding:0;"><strong><span style="font-size: 9pt; font-family: Verdana">E.&amp; .O E</span></strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3" style="border-left: thin none #C0C0C0; border-right: thin solid #C0C0C0; border-top: thin solid #C0C0C0; border-bottom: thin solid #C0C0C0; width: 237px; text-align: left; border-style: none;">
+                    @if (!string.IsNullOrWhiteSpace(item.IRNQRCode))
+                    {
+                        <span style="font-family:Verdana;font-size:7pt;font-weight:bold;text-align: left;">E-Invoice QR Code:</span>
+
+                        <br />
+                        <img src="data:image/png;base64,@item.IRNQRCode" style="height:170px;width:170px;border-width:0px;text-align: left;" />
+
+                        <br />
+                    }
+                    <span style="font-size: smaller;"> @System.DateTime.Now.ToString("MMM dd yyyy hh:mmtt")</span> <br /> <p>Sales Executive:<span style="font-family:Verdana;font-size:11pt;"> <br />@item.Salesman</span></p>
+                </div>
+                <div class="col-sm-6" style="display:inline-block; font-family:Verdana; font-size:9pt; line-height:1.5;">
+                    <p>
+                        <span style="font-family:Verdana;font-size:9pt;">
+                            @Html.Raw(item.BottomDescription + item.BeneficiaryDetails)
+                        </span>
+                    </p>
+                </div>
+                <div class="col-sm-3" style="border-left: thin none #C0C0C0; border-right: thin solid #C0C0C0; border-top: thin solid #C0C0C0; border-bottom: thin solid #C0C0C0; width: 237px; text-align: right; border-style: none;">
+                    <span style="font-family:Verdana;font-size:9pt;font-weight:bold;text-align: right;">QR Code for Payments:</span><br />
+
+                    @if (item.Company.BusinessEntityName.Equals("Triumph Supply Chain Private Limited"))
+                    {
+                        <img src="@ViewBag.ApiUrl/api/Reports/Triumph-payment-qr-code.jpg" style="height:170px;width:170px;border-width:0px;" />
+                    }
+                    else
+                    {
+                        <img src="@ViewBag.ApiUrl/api/Reports/tripath-payment-qr-code.JPG" style="height:170px;width:170px;border-width:0px;" />
+                    }
+                    <br />
+                    <span style="font-family: Verdana ;font-size:9pt;">For </span><span style="font-family: Verdana ;font-size:7pt;">@item.Company.BusinessEntityName</span><br />
+                    <span style="font-family:Verdana;font-size:10pt;text-align: center;"><br />@item.EmployeeName</span>
+                </div>
+            </div>
+
+        }
+
+        /* @if (@item.Outstanding == "True")
+        {
+        <h1 style="font-size: 20px;">
+        the outstanding information is only of invoice module and is not part of invoice, subject to reconcilation. if you find any discrepencies kindly contact us for rectification.
+        </h1>
+        <table class="table table-bordered table-striped invoice-table">
+        <thead>
+        <tr>
+        <th style="font-size: 12px;">advance</th>
+        <th style="font-size: 12px;">>30</th>
+        <th style="font-size: 12px;">30- 60</th>
+        <th style="font-size:12px;">60- 90</th>
+        <th style="font-size: 12px;">>90</th>
+        <th style="font-size: 12px;">net</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="font-size: 12px;">@item.Advance</td>
+        <td style="font-size: 12px;">@item.LessthenDate</td>
+        <td style="font-size: 12px;">@item.LessThenBWDate</td>
+        <td style="font-size: 12px;">@item.GreterBwDate</td>
+        <td style="font-size: 12px;">@item.GreterDate</td>
+        <td style="font-size: 12px;">@item.Net</td>
+        </tr>
+        </tbody>
+        </table>
+        }
+        @if (@item.Receipt == "True")
+        {
+        <h1 style="font-size: 24px;">receipt details</h1>
+        <table class="table table-bordered table-striped invoice-table">
+        <thead>
+        <tr>
+        <th style="font-size: 12px;">invoice amount</th>
+        <th style="font-size: 12px;">paid amount</th>
+        <th style="font-size: 12px;">balance amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td style="font-size: 12px;">@item.TotalAmount</td>
+        <td style="font-size: 12px;">@item.PaidAmt</td>
+        <td style="font-size: 12px;">@item.BalAmt</td>
+        </tr>
+        </tbody>
+        </table>
+                }  */
+        //<div class="pagebreak"></div>
+        <div class="watermark-container"></div>
+        @* <!-- Page Footer --> *@
+        <div class="page-footer">
+            Page @currentPage of @totalPages
+        </div>
+        @if (currentPage < totalPages)
+        {
+            <div class="pagebreak"></div>
+        }
+    }
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+﻿@model AtGo2.DocumentService.Models.Request.ConsignmentNote.ConsignmentNoteRequest
+@{
+    string logoFileName = Model.CompanyDetails?.CompanyCode == "TPL" ? "company-logo.png" : "TriumphLogo.png";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Consignment Note - Triumph Supply Chain</title>
+    <!-- Bootstrap 5 CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @@media print {
+            @@page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+
+            body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 10px;
+            margin: 8px;
+            color: #000;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #000;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        .logo img {
+            height: 45px;
+        }
+
+        .company-info {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+            .company-info h2 {
+                margin: 0;
+                font-size: 16px;
+            }
+
+            .company-info p {
+                margin: 2px 0;
+                font-size: 10px;
+            }
+
+        .qr img {
+            height: 60px;
+            width: 60px;
+        }
+
+        .main {
+            border: 2px black solid;
+            padding: 6px;
+        }
+
+        .left-section {
+            flex: 2.5;
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        .right-section {
+            flex: 1.5;
+            border: 1px solid #ccc;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            background-color: #e1edff;
+            padding: 4px;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+            margin-top: 6px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 2px;
+            vertical-align: top;
+            font-size: 10px;
+        }
+
+        .terms {
+            font-size: 9px;
+            border: 1px solid #ccc;
+            padding: 6px;
+            margin-top: 6px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 10px;
+        }
+
+        .spacer {
+            flex-grow: 1;
+        }
+
+        .office-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: blue;
+        }
+
+        .bill-no {
+            font-size: 20px;
+            color: #c67070;
+            font-weight: 500;
+        }
+
+        .key {
+            display: flex;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 4px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            /* background-color: dodgerblue;
+                                  padding: 10px; */
+        }
+
+            .container > div {
+                /* background-color: #f1f1f1; */
+                border: 1px solid black;
+                /* padding: 10px; */
+                font-size: 13px;
+                font-weight: 600;
+                /* margin-left: 2%; */
+            }
+
+        .card {
+            border: 2px solid black;
+            border-radius: 0 !important;
+            padding: 4px !important;
+            /* Add this to reduce spacing */
+            margin-bottom: 4px !important;
+        }
+
+        hr {
+            margin: 0 !important;
+        }
+
+        table
+        tr th {
+            border: 2px solid black;
+        }
+
+        .form-check-input[type=checkbox] {
+            border-radius: .25em;
+            height: 16px;
+            width: 20px;
+        }
+
+        label {
+            margin-left: 7px;
+        }
+
+        .terms {
+            font-size: 10px;
+            border-top: 1px solid #aaa;
+            padding-top: 4px;
+            margin-top: 10px;
+            color: #444;
+        }
+
+        ol, ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+
+            ol li, ul li {
+                margin-bottom: 2px;
+                padding: 0;
+                font-size: 9px;
+            }
+
+        .row {
+            margin-bottom: 4px;
+        }
+
+    </style>
+</head>
+<body>
+    @foreach (var printType in Model.PrintTypes)
+    {
+        <div class="main">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h4 style="
+            letter-spacing: 3px;
+            padding: 4px 0;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #7b3f3f;
+            font-size: 16px;
+            margin-bottom: 4px;">
+                        CONSIGNMENT NOTE (@printType)
+                    </h4>
+                </div>
+            </div>
+            <div class="px-3">
+                <div class="row">
+                    <!-- Logo -->
+                    <div class="card col-3 d-flex align-items-center justify-content-center px-1">
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+                            <img src="@ViewBag.ApiUrl/api/Reports/@logoFileName" alt="Logo" style="height:100%;width:100%" />
+                        </div>
+                    </div>
+                    <!-- Company Info -->
+                    <div class="card col-6 d-flex flex-column justify-content-between px-1">
+                        <div class="text-center">
+                            <h4 class="office-title mb-1" style="letter-spacing: 1px;">@Model.CompanyDetails?.CompanyName</h4>
+                            <div class="text-center" style="font-weight:700"> @Model.CompanyDetails?.RegisteredOffice <br /> Email: @Model.CompanyDetails?.Email | Phone: @Model.CompanyDetails?.Phone </div>
+                            <div class="text-center" style="font-weight:700">GSTIN: @Model.CompanyDetails?.GSTIN &nbsp;|&nbsp; PAN: @Model.CompanyDetails?.PAN</div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <div class="bill-no" style="font-size: 13px; font-weight: 600;">
+                                    Consignment No: <span class="text-uppercase" style="color: #7b3f3f;">@Model.ConsignmentNumber</span>
+                                </div>
+                            </div>
+                            <div class="col-6 text-end">
+                                <div class="bill-no" style="font-size: 13px; font-weight: 600;">
+                                    Date: <span class="text-uppercase" style="color: #7b3f3f;">@Model.ConsignmentDate?.ToString("dd-MM-yyyy")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- QR Code -->
+                    <div class="card col-3 d-flex align-items-center justify-content-center px-1">
+                        @if (ViewBag.QRCodeImage != null)
+                        {
+                            <div class="w-100 h-100 d-flex align-items-center justify-content-center flex-column">
+                                <img src="@ViewBag.QRCodeImage" alt="QR Code" style="height: 100%; max-height: 110px; width: auto; object-fit: contain;" />
+                                <div style="font-size: 9px;">Scan to Track</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- LEFT -->
+                <div class="col-8">
+                    <div class="card my-2 px-3 py-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="key">Consignor: <br />@Model.Consignor?.Name </div>
+                                <div class="key">GST: @Model.Consignor?.GST</div>
+                                <div class="key">Address: @Model.Consignor?.Address</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="key">Consignee: <br />@Model.Consignee?.Name </div>
+                                <div class="key">GST: @Model.Consignee?.GST</div>
+                                <div class="key">Address: @Model.Consignee?.Address</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="key">Billing: <br />@Model.Billing?.Name </div>
+                                <div class="key">GST: @Model.Billing?.GST</div>
+                                <div class="key">Address: @Model.Billing?.Address</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card ">
+                                <div class="key px-4">ORIGIN : @Model.Origin</div>
+                                <hr>
+                                <div class="key px-4">DESTINATION : @Model.Destination</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card ">
+                                <div class="key px-4">Vehicle No : @Model.VehicleNo</div>
+                                <hr>
+                                <div class="key px-4">Vehicle Type : @Model.VehicleType</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <div class="card ">
+                                <div class="key px-4">Invoice No : @string.Join(',', Model.InvoiceDetails.Select(x => x.InvoiceNo))</div>
+                                <hr>
+                                <div class="key px-4">Invoice Date : @string.Join(',', Model.InvoiceDetails.Select(x => x.InvoiceDate?.ToString("dd-MMM-yyyy")))</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="key px-4">E-way Bill No : @Model.EWayBillNo</div>
+                                <hr>
+                                <div class="key px-4">Total Invoice Value : ₹@Model.TotalInvoiceValue</div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="my-2">
+                        <thead>
+                            <tr>
+                                <th>Packages</th>
+                                <th>Description</th>
+                                <th>Weight</th>
+                                <th>Volume</th>
+                                <th>Dimensions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var packages = Model.Items.ToList();
+                            }
+                            @for (int i = 0; i < packages.Count; i++)
+                            {
+                                var item = packages[i];
+                                bool isLast = i == packages.Count - 1;
+
+                                <tr>
+                                    <td style="border-left: 2px solid black; border-right: 2px solid black; border-top:none; @(isLast ? "border-bottom: 2px solid black;" : "border-bottom: none;")">
+                                        @item.Packages
+                                    </td>
+                                    <td style="border-left: 2px solid black; border-right: 2px solid black; border-top:none; @(isLast ? "border-bottom: 2px solid black;" : "border-bottom: none;")">
+                                        @item.Description
+                                    </td>
+                                    <td style="border-left: 2px solid black; border-right: 2px solid black; border-top:none; @(isLast ? "border-bottom: 2px solid black;" : "border-bottom: none;")">
+                                        @item.Weight
+                                    </td>
+                                    <td style="border-left: 2px solid black; border-right: 2px solid black; border-top:none; @(isLast ? "border-bottom: 2px solid black;" : "border-bottom: none;")">
+                                        @item.Volume
+                                    </td>
+                                    <td style="border-left: 2px solid black; border-right: 2px solid black; border-top:none; @(isLast ? "border-bottom: 2px solid black;" : "border-bottom: none;")">
+                                        @item.Size
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-4">
+                    <div class="key px-4">TRANSPORTER ID : @Model.TransporterId</div>
+                    <div class="card key">
+                        <div class="row">
+                            <div class="col-9 border-end border-dark">
+                                <div class="px-4">FREIGHT: @Model.Freight.ToString()</div>
+                                <hr>
+                                <div class="px-4">Damages, If any: @Model.Damages</div>
+                                <hr>
+                                <div class="px-4">Billing Branch: @Model.CompanyDetails?.BillingBranch</div>
+                                <hr>
+                            </div>
+                            <div class="col-3">
+                                <div>HVC</div>
+                            </div>
+                            <div class="col-12">
+                                <div class=" text-center"> VEHICLE DETENTION, IF ANY </div>
+                                <table>
+                                    <tr>
+                                        <th>Report</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Report</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card my-2">
+                        <div class="key px-4">AT OWNER'S RISK / INSURANCE</div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="key px-4">The Customer has stated that He has insured the consignment:</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-check form-check-inline">
+                                    @(Model.IsInsured ? "Yes" : "No")
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="key px-4">Company: @Model.InsuranceCompany</div>
+                        <div class="col-12">
+                            <table>
+                                <tr>
+                                    <th>Policy No:</th>
+                                    <th>Date:</th>
+                                    <th>Amount:</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <h6 class=" text-center">GST PAYABLE UNDER FCM@12</h6>
+                    <div class="card key p-2 d-flex flex-column justify-content-end" style="height: 145px;">
+                        <div class="text-center">For @Model.CompanyDetails?.CompanyName</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <small> @Model.CompanyDetails?.TermsAndConditions </small>
+            </div>
+        </div>
+        <div style="page-break-after: always;"></div>
+        @if (Model.TermsConditions.Any())
+        {
+            <div style="page-break-before: always;"></div>
+            <div class="container-fluid">
+                <h4 class="text-center mb-2" style="
+            letter-spacing: 1px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #7b3f3f;
+            font-size: 14px;">
+                    Terms and Conditions
+                </h4>
+                <div class="row" style="font-size: 9px; line-height: 1.2;">
+                    @{
+                        var leftColumn = Model.TermsConditions.Where((x, i) => i % 2 == 0).ToList();
+                        var rightColumn = Model.TermsConditions.Where((x, i) => i % 2 != 0).ToList();
+                    }
+
+                    <div class="col-6 pe-2" style="border-right: 1px solid #ccc;">
+                        <ol class="mb-0 ps-3">
+                            @foreach (var tc in leftColumn)
+                            {
+                                <li class="mb-1">
+                                    <strong>@tc.Header</strong>
+                                    <ul class="mb-1 ps-3">
+                                        @foreach (var detail in tc.Details)
+                                        {
+                                            <li class="mb-0">@detail</li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+
+                    <div class="col-6 ps-2">
+                        <ol start="@((leftColumn.Count) + 1)" class="mb-0 ps-3">
+                            @foreach (var tc in rightColumn)
+                            {
+                                <li class="mb-1">
+                                    <strong>@tc.Header</strong>
+                                    <ul class="mb-1 ps-3">
+                                        @foreach (var detail in tc.Details)
+                                        {
+                                            <li class="mb-0">@detail</li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div style="page-break-after: always;"></div>
+        }
+    }
+</body>
+</html>

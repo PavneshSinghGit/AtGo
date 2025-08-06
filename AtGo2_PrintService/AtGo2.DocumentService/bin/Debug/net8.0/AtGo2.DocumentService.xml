@@ -1,0 +1,926 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AtGo2.DocumentService</name>
+    </assembly>
+    <members>
+        <member name="T:AtGo2.DocumentService.Controllers.DocumentsController">
+            <summary>
+            Documents controller.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Controllers.DocumentsController.#ctor(AtGo2.DocumentService.Services.IFileHandlerFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AtGo2.DocumentService.Controllers.DocumentsController"/> class.
+            </summary>
+            <param name="fileHandlerFactory">The fileHandlerFactory.</param>
+        </member>
+        <member name="M:AtGo2.DocumentService.Controllers.DocumentsController.UploadFiles(AtGo2.DocumentService.Models.Request.Documents.DocumentUploadRequest)">
+            <summary>
+            Endpoint to upload the file.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="T:AtGo2.DocumentService.Controllers.HealthController">
+            <summary>
+            Health controller.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Controllers.HealthController.Index">
+            <summary>
+            Gets the health.
+            </summary>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="T:AtGo2.DocumentService.Controllers.ReportsController">
+            <summary>
+            Controller for report generation.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Controllers.ReportsController.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AtGo2.DocumentService.Controllers.ReportsController"/> class.
+            </summary>
+            <param name="config">The config.</param>
+        </member>
+        <member name="M:AtGo2.DocumentService.Controllers.ReportsController.GetReport(System.String)">
+            <summary>
+            Generates the report.
+            </summary>
+            <param name="reportType">The report request.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="M:AtGo2.DocumentService.Controllers.ReportsController.GetImage(System.String)">
+            <summary>
+            Gets the image.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>.</returns>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.BusinessEntity">
+            <summary>
+            Model for business entity.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.BusinessEntity.BusinessEntityName">
+            <summary>
+            Gets or sets the business entity party name.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.BusinessEntity.BusinessEntityAddress">
+            <summary>
+            Gets or sets the business entity party address.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.BusinessEntity.BusinessEntityGSTNumber">
+            <summary>
+            Gets or sets the business entity party GST number.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.BusinessEntity.BusinessEntityGSTState">
+            <summary>
+            Gets or sets the business entity party GST state.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.BusinessEntity.LUTNumber">
+            <summary>
+            Gets or sets the LUT number.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.BusinessEntity.LUTDate">
+            <summary>
+            Gets or sets the LUT Date.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.BusinessEntity.MSMENumber">
+            <summary>
+            Gets or sets the MSME number.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Configuration.BaseDocumentHandlerConfiguration">
+            <summary>
+            Configuration for document handler.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Configuration.BaseDocumentHandlerConfiguration.RootDirectory">
+            <summary>
+            Gets or sets the RootDirectory.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Configuration.DocumentHandlerConfiguration">
+            <summary>
+            Configuration class for document handler.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Configuration.DocumentHandlerConfiguration.FileSystem">
+            <summary>
+            Gets or sets the FileSystem configuration.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Configuration.DocumentHandlerConfiguration.Ftp">
+            <summary>
+            Gets or sets the Ftp configuration.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Configuration.FileSystemSettings">
+            <summary>
+            File system settings.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Configuration.FTPSettings">
+            <summary>
+            Configuration model for FTP.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Configuration.FTPSettings.Host">
+            <summary>
+            Gets or sets the Host.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Configuration.FTPSettings.Port">
+            <summary>
+            Gets or sets the Port.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Configuration.FTPSettings.Username">
+            <summary>
+            Gets or sets the Username.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Configuration.FTPSettings.Password">
+            <summary>
+            Gets or sets the Password.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.FileStorageMode">
+            <summary>
+            Enumeration for file storage.
+            </summary>
+        </member>
+        <member name="F:AtGo2.DocumentService.Models.FileStorageMode.FileSystem">
+            <summary>
+            FileSystem.
+            </summary>
+        </member>
+        <member name="F:AtGo2.DocumentService.Models.FileStorageMode.FTP">
+            <summary>
+            FTP.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.InvoiceItem">
+            <summary>
+            Container for invoice item.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.Particulars">
+            <summary>
+            Gets or sets the particulars or charge name.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.SACCode">
+            <summary>
+            Gets or sets the SACCode.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.Description">
+            <summary>
+            Gets or sets the SACCode.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.TNT">
+            <summary>
+            Gets or sets the SACCode.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.ChargeType">
+            <summary>
+            Gets or sets the ChargeType.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.Amount">
+            <summary>
+            Gets or sets the SACCode.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.Currency">
+            <summary>
+            Gets or sets the Currency.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.CGST">
+            <summary>
+            Gets or sets the CGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.CGSTPercent">
+            <summary>
+            Gets or sets the CGSTPercent.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.SGST">
+            <summary>
+            Gets or sets the SGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.SGSTPercent">
+            <summary>
+            Gets or sets the SGSTPercent.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.IGST">
+            <summary>
+            Gets or sets the IGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.InvoiceItem.IGSTPercent">
+            <summary>
+            Gets or sets the IGSTPercent.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Request.Documents.DocumentUploadRequest">
+            <summary>
+            Request model for document upload.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.Documents.DocumentUploadRequest.Files">
+            <summary>
+            Gets or sets the files.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.Documents.DocumentUploadRequest.Path">
+            <summary>
+            Gets or sets the path.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Request.InvoicePrintData">
+            <summary>
+            Request model for invoice report.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.InvoiceType">
+            <summary>
+            Gets or sets the invoice type.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.InvoiceNo">
+            <summary>
+            Gets or sets the invoice number.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.InvoiceDate">
+            <summary>
+            Gets or sets the invoice date.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.JobNo">
+            <summary>
+            Gets or sets the job no.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.HouseNo">
+            <summary>
+            Gets or sets the house no.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.MasterNo">
+            <summary>
+            Gets or sets the master no.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Packages">
+            <summary>
+            Gets or sets the packages.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Weight">
+            <summary>
+            Gets or sets the weight.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Destination">
+            <summary>
+            Gets or sets the Destination.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.POS">
+            <summary>
+            Gets or sets the POS.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.LOS">
+            <summary>
+            Gets or sets the LOS.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.NOS">
+            <summary>
+            Gets or sets the NOS.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.RefNo">
+            <summary>
+            Gets or sets the RefNo.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.IRN">
+            <summary>
+            Gets or sets a value indicating whether the IRN is set.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.InvoiceTagging">
+            <summary>
+            Gets or sets a InvoiceTagging.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.EInvoiceType">
+            <summary>
+            Gets or sets the EInvoiceType.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.QuoteNo">
+            <summary>
+            Gets or sets the QuoteNo.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Remarks">
+            <summary>
+            Gets or sets the Remarks.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Module">
+            <summary>
+            Gets or sets the Module.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.EmployeeName">
+            <summary>
+            Gets or sets the EmployeeName.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Salesman">
+            <summary>
+            Gets or sets the Salesman.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.SubTotal">
+            <summary>
+            Gets or sets the SubTotal.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.CGST">
+            <summary>
+            Gets or sets the CGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.SGST">
+            <summary>
+            Gets or sets the SGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.IGST">
+            <summary>
+            Gets or sets the IGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.TotalAmount">
+            <summary>
+            Gets or sets the TotalAmount.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.AmountInWords">
+            <summary>
+            Gets or sets the AmountInWords.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Currency">
+            <summary>
+            Gets or sets the Currency.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ExRate">
+            <summary>
+            Gets or sets the Exrate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.IRNQRCode">
+            <summary>
+            Gets or sets the IRNQRCode.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.BottomDescription">
+            <summary>
+            Gets or sets the BottomDescription.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.BeneficiaryDetails">
+            <summary>
+            Gets or sets the BeneficiaryDetails.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.BillTo">
+            <summary>
+            Gets or sets the Billing party.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ShipTo">
+            <summary>
+            Gets or sets the Ship to party.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Company">
+            <summary>
+            Gets or sets the company.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.InvoiceItems">
+            <summary>
+            Gets or sets the InvoiceItems.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.IsCrossCountry">
+            <summary>
+            Gets or sets the IsCrossCountry.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Vesselname">
+            <summary>
+            Gets or sets the vesselname.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Voyageno">
+            <summary>
+            Gets or sets the voyageno.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.JobDate">
+            <summary>
+            Gets or sets the JobDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.IRNNo">
+            <summary>
+            Gets or sets the JobDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.FlightNo">
+            <summary>
+            Gets or sets the FlightNo.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.SAWBNo">
+            <summary>
+            Gets or sets the SAWBNo.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Orign">
+            <summary>
+            Gets or sets the Orign.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ChrgWt">
+            <summary>
+            Gets or sets the ChrgWt.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.FlightDate">
+            <summary>
+            Gets or sets the FlightDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.IgmNo">
+            <summary>
+            Gets or sets the IgmNo.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Marks">
+            <summary>
+            Gets or sets the Marks.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ShprName">
+            <summary>
+            Gets or sets the ShprName.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.PC">
+            <summary>
+            Gets or sets the PC.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.LF">
+            <summary>
+            Gets or sets the LF.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Measurement">
+            <summary>
+            Gets or sets the Measurement.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Containers">
+            <summary>
+            Gets or sets the Containers.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.PLoading">
+            <summary>
+            Gets or sets the PLoading.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Discharge">
+            <summary>
+            Gets or sets the Discharge.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.PDelivery">
+            <summary>
+            Gets or sets the PDelivery.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.SMTP">
+            <summary>
+            Gets or sets the SMTP.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ItemNo">
+            <summary>
+            Gets or sets the SMTP.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ContainerNo">
+            <summary>
+            Gets or sets the SMTP.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Notify">
+            <summary>
+            Gets or sets the Billing party.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.LinerName">
+            <summary>
+            Gets or sets the LinerName.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.LinerAddr">
+            <summary>
+            Gets or sets the LinerAddr.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.NetWt">
+            <summary>
+            Gets or sets the NetWt.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ShipLineCode">
+            <summary>
+            Gets or sets the ShipLineCode.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Registered">
+            <summary>
+            Gets or sets the Registered.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Sez">
+            <summary>
+            Gets or sets the Sez.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Descr">
+            <summary>
+            Gets or sets the Descr.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.CBM">
+            <summary>
+            Gets or sets the Measurement.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.PReceipt">
+            <summary>
+            Gets or sets the PReceipt.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.ConsigneeName">
+            <summary>
+            Gets or sets the ConsigneeName.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.BillNo">
+            <summary>
+            Gets or sets the ConsigneeName.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.PureAgentBillNo">
+            <summary>
+            Gets or sets the ConsigneeName.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.InvDate">
+            <summary>
+            Gets or sets the JobDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.TotalAmt">
+            <summary>
+            Gets or sets the TotalAmount.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.PaidAmt">
+            <summary>
+            Gets or sets the PaidAmt.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.BalAmt">
+            <summary>
+            Gets or sets the BalAmt.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Receipt">
+            <summary>
+            Gets or sets the Receipt.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Advance">
+            <summary>
+            Gets or sets the Advance.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.LessthenDate">
+            <summary>
+            Gets or sets the LessthenDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.LessThenBWDate">
+            <summary>
+            Gets or sets the LessThenB/WDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.GreterBwDate">
+            <summary>
+            Gets or sets the GreterB/wDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.GreterDate">
+            <summary>
+            Gets or sets the GreterB/wDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Net">
+            <summary>
+            Gets or sets the GreterB/wDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Outstanding">
+            <summary>
+            Gets or sets the Receipt.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.HouseDate">
+            <summary>
+            Gets or sets the HouseDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.MasterDate">
+            <summary>
+            Gets or sets the MasterDate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.Type">
+            <summary>
+            Gets or sets the Type.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoicePrintData.CanNo">
+            <summary>
+            Gets or sets the CanNo.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Request.InvoiceReportRequest">
+            <summary>
+            Request model for printing invoice details.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoiceReportRequest.Settings">
+            <summary>
+            Gets or sets the Settings for the print.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoiceReportRequest.Invoices">
+            <summary>
+            Gets or sets the invoices.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Request.InvoiceReportSettings">
+            <summary>
+            Container for invoice report settings.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoiceReportSettings.AddLogo">
+            <summary>
+            Gets or sets a value indicating whether logo has to be added or not.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.InvoiceReportSettings.PrintType">
+            <summary>
+            Gets or sets the PrintType.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Request.ReportRequest">
+            <summary>
+            Request model for report.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Request.TB5ReportRequest">
+            <summary>
+            Request for TB5 Report.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRequest.ReportType">
+            <summary>
+            Gets or sets the ReportType.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRequest.Records">
+            <summary>
+            Gets or sets the records.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.Request.TB5ReportRecord">
+            <summary>
+            Container for TB5 rpeort records.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.Taxability">
+            <summary>
+            Gets or sets the Taxability.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.GSTR1Field">
+            <summary>
+            Gets or sets the GSTR1Field.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.ITCEligibility">
+            <summary>
+            Gets or sets the ITCEligibility.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.TypeOfCustomer">
+            <summary>
+            Gets or sets the TypeOfCustomer.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.NatureOfSupply">
+            <summary>
+            Gets or sets the NatureOfSupply.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.SubGroup">
+            <summary>
+            Gets or sets the SubGroup.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.VoucherType">
+            <summary>
+            Gets or sets the VoucherType.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.TaxRate">
+            <summary>
+            Gets or sets the TaxRate.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.Request.TB5ReportRecord.TransactionValueWithTaxByStateCodeWithName">
+            <summary>
+            Gets or sets the TransactionValueWithTaxByStateCodeWithName.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Models.StatewiseTransactionValueWithTax">
+            <summary>
+            Container for statewise transaction value.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.StatewiseTransactionValueWithTax.TaxableValue">
+            <summary>
+            Gets or sets the taxable value.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.StatewiseTransactionValueWithTax.IGST">
+            <summary>
+            Gets or sets the IGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.StatewiseTransactionValueWithTax.CGST">
+            <summary>
+            Gets or sets the CGST.
+            </summary>
+        </member>
+        <member name="P:AtGo2.DocumentService.Models.StatewiseTransactionValueWithTax.SGST">
+            <summary>
+            Gets or sets the SGST.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.DocumentsService">
+            <summary>
+            Implementation for documents service.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.FileHandlerFactory">
+            <summary>
+            Implementation for file handler factory.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.FileHandlerFactory.#ctor(Microsoft.Extensions.Options.IOptions{AtGo2.DocumentService.Models.Configuration.DocumentHandlerConfiguration})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AtGo2.DocumentService.Services.FileHandlerFactory"/> class.
+            </summary>
+            <param name="options">The options.</param>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.FileHandlerFactory.GetFileHandler(AtGo2.DocumentService.Models.FileStorageMode,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.FileSystemHandler">
+            <summary>
+            Handler for file system.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.FileSystemHandler.#ctor(AtGo2.DocumentService.Models.Configuration.FileSystemSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AtGo2.DocumentService.Services.FileSystemHandler"/> class.
+            </summary>
+            <param name="fileSystemSettings">The fileSystemSettings.</param>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.FileSystemHandler.SaveFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.FTPHandler">
+            <summary>
+            Implementation for FTP handler.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.FTPHandler.#ctor(AtGo2.DocumentService.Models.Configuration.FTPSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AtGo2.DocumentService.Services.FTPHandler"/> class.
+            </summary>
+            <param name="ftpSettings">The ftpSettings.</param>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.FTPHandler.SaveFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.IDocumentGeneratorService`1">
+            <summary>
+            Interface for document generator service.
+            </summary>
+            <typeparam name="T">The type.</typeparam>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.IDocumentGeneratorService`1.GenerateDocument(`0)">
+            <summary>
+            Generates the document.
+            </summary>
+            <param name="reportData">The reportData.</param>
+            <returns><see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>.</returns>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.IDocumentsService">
+            <summary>
+            Interface for document service.
+            </summary>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.IFileHandler">
+            <summary>
+            Inteface for file handler.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.IFileHandler.SaveFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            Saves the file.
+            </summary>
+            <param name="file">The file.</param>
+            <param name="path">The path (optional).</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.IFileHandlerFactory">
+            <summary>
+            Interface for file handler factory.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.IFileHandlerFactory.GetFileHandler(AtGo2.DocumentService.Models.FileStorageMode,System.String)">
+            <summary>
+            Gets the file handler based on storage mode.
+            </summary>
+            <param name="mode">The mode.</param>
+            <param name="tenantId">The tenantId.</param>
+            <returns>The <see cref="T:AtGo2.DocumentService.Services.IFileHandler"/>.</returns>
+        </member>
+        <member name="T:AtGo2.DocumentService.Services.TB5ReportGeneratorService">
+            <summary>
+            Document generator service for TB5 Report.
+            </summary>
+        </member>
+        <member name="M:AtGo2.DocumentService.Services.TB5ReportGeneratorService.GenerateDocument(AtGo2.DocumentService.Models.Request.TB5ReportRequest)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>
